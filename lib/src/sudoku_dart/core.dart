@@ -18,12 +18,9 @@ class Sudoku {
 
     List<int> answer = puzzle.sublist(0);
     List<List<bool>> rows, cols, zones;
-    rows = List<List<bool>>.generate(
-        81, (index) => List<bool>.generate(10, (index) => false));
-    cols = List<List<bool>>.generate(
-        81, (index) => List<bool>.generate(10, (index) => false));
-    zones = List<List<bool>>.generate(
-        81, (index) => List<bool>.generate(10, (index) => false));
+    rows = List<List<bool>>.generate(81, (index) => List<bool>.generate(10, (index) => false));
+    cols = List<List<bool>>.generate(81, (index) => List<bool>.generate(10, (index) => false));
+    zones = List<List<bool>>.generate(81, (index) => List<bool>.generate(10, (index) => false));
 
     int row, col, zone;
     this._puzzle.asMap().forEach((int index, int num) {
@@ -50,8 +47,7 @@ class Sudoku {
     if (strict) {
       // 唯一解模式,多解则抛出错误
       Map mark = Map.from({"finishes": 0, "answer": null});
-      _dsfOneSolutionCalculate(
-          rows, cols, zones, answer, firstCheckPoint, traceBackNums, mark);
+      _dsfOneSolutionCalculate(rows, cols, zones, answer, firstCheckPoint, traceBackNums, mark);
       int finishes = mark["finishes"];
       if (finishes > 1) {
         // 不是唯一解 not on-solution
@@ -65,27 +61,19 @@ class Sudoku {
       }
     } else {
       // 回溯模式
-      isSuccess =
-          _backtrackCalculate(rows, cols, zones, answer, firstCheckPoint);
+      isSuccess = _backtrackCalculate(rows, cols, zones, answer, firstCheckPoint);
     }
 
     if (!isSuccess) {
-      throw StateError(
-          "not found the solution. is that you give me the puzzle with mistake?");
+      throw StateError("not found the solution. is that you give me the puzzle with mistake?");
     }
 
     this._answer = answer;
     this._timeCount = DateTime.now().millisecondsSinceEpoch - timeBegin;
   }
 
-  _dsfOneSolutionCalculate(
-      List<List<bool>> rows,
-      List<List<bool>> cols,
-      List<List<bool>> zones,
-      List<int> answer,
-      int index,
-      traceBackNums,
-      Map mark) {
+  _dsfOneSolutionCalculate(List<List<bool>> rows, List<List<bool>> cols, List<List<bool>> zones, List<int> answer,
+      int index, traceBackNums, Map mark) {
     if (mark["finishes"] > 1) {
       return;
     }
@@ -102,8 +90,7 @@ class Sudoku {
     }
 
     if (answer[index] != -1) {
-      _dsfOneSolutionCalculate(
-          rows, cols, zones, answer, index + 1, traceBackNums, mark);
+      _dsfOneSolutionCalculate(rows, cols, zones, answer, index + 1, traceBackNums, mark);
       return;
     }
 
@@ -119,13 +106,7 @@ class Sudoku {
         zones[zone][num] = true;
 
         _dsfOneSolutionCalculate(
-            List.from(rows),
-            List.from(cols),
-            List.from(zones),
-            List.from(answer),
-            index + 1,
-            traceBackNums,
-            mark);
+            List.from(rows), List.from(cols), List.from(zones), List.from(answer), index + 1, traceBackNums, mark);
 
         answer[index] = -1;
         rows[row][num] = false;
@@ -135,8 +116,8 @@ class Sudoku {
     }
   }
 
-  bool _backtrackCalculate(List<List<bool>> rows, List<List<bool>> cols,
-      List<List<bool>> zones, List<int> answer, int index) {
+  bool _backtrackCalculate(
+      List<List<bool>> rows, List<List<bool>> cols, List<List<bool>> zones, List<int> answer, int index) {
     int row, col, zone;
     row = Matrix.getRow(index);
     col = Matrix.getCol(index);
@@ -188,6 +169,5 @@ class Sudoku {
 
   int get timeCount => this._timeCount;
 
-  static Sudoku generate(sudokuGenerator.Level level) =>
-      sudokuGenerator.generate(level: level);
+  static Sudoku generate(sudokuGenerator.Level level) => sudokuGenerator.generate(level: level);
 }

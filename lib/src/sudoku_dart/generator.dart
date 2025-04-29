@@ -5,7 +5,7 @@ import 'tools.dart';
 
 enum Level { easy, medium, hard, expert }
 
-Sudoku generate({Level level = Level.easy}) {
+Sudoku generate({Level level = Level.easy, int? seed}) {
   // level to dig hole count
   int digHoleCount = 40;
   switch (level) {
@@ -25,12 +25,11 @@ Sudoku generate({Level level = Level.easy}) {
       break;
   }
 
-  return _generate(digHoleCount);
+  return _generate(digHoleCount, seed);
 }
 
-Sudoku _generate(int digHoleCount) {
-  List<int> randCenterZoneIndexes =
-      shuffle(List.generate(9, (index) => index + 1)).cast<int>();
+Sudoku _generate(int digHoleCount, int? seed) {
+  List<int> randCenterZoneIndexes = shuffle(List.generate(9, (index) => index + 1)).cast<int>();
   List<int> simplePuzzle = List.generate(81, (index) => index);
   for (int i = 0; i < simplePuzzle.length; ++i) {
     if (Matrix.getZone(index: i) == 4) {
@@ -40,22 +39,20 @@ Sudoku _generate(int digHoleCount) {
     }
   }
   Sudoku sudoku = new Sudoku(simplePuzzle);
-  Sudoku? generatedSudoku = _internalGenerate(sudoku.solution, digHoleCount);
+  Sudoku? generatedSudoku = _internalGenerate(sudoku.solution, digHoleCount, seed);
   if (generatedSudoku != null) {
     return generatedSudoku;
   }
   // reduce the difficulty
   print("reduce the difficulty ${digHoleCount} => ${digHoleCount - 2}");
-  return _generate(digHoleCount - 2);
+  return _generate(digHoleCount - 2, seed);
 }
 
-Sudoku? _internalGenerate(List<int> digHolePuzzle, int digHoleCount) {
+Sudoku? _internalGenerate(List<int> digHolePuzzle, int digHoleCount, int? seed) {
   List<int> candidateIndexes;
   // fixedPosition should each by zone and calculate by random index and sort them
-  Random rand = Random();
-  List fixedPositions =
-      List.generate(9, (zone) => Matrix.getIndexByZone(zone, rand.nextInt(9)))
-          .cast<int>();
+  Random rand = Random(seed);
+  List fixedPositions = List.generate(9, (zone) => Matrix.getIndexByZone(zone, rand.nextInt(9))).cast<int>();
 
   // candidateIndexes = List.generate(81,(idx)=>idx);
   // for(final (i,fixedPosition) in fixedPositions.indexed){

@@ -83,6 +83,9 @@ import 'package:sudoku_dart/sudoku_dart.dart';
 // generate random puzzle with one-solution
 // Level : easy(简单), medium(中等), hard(困难), expert(专家)
 Sudoku sudoku = Sudoku.generate(Level.expert);
+// Generate a random puzzle from a seed
+int fixedSeed = 4567805;
+Sudoku sudoku = Sudoku.generate(Level.expert, fixedSeed);
 ```
 
 ## more
