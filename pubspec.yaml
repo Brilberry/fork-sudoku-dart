@@ -1,7 +1,7 @@
-name: sudoku_dart
+name: fork_sudoku_dart
 description: sudoku_dart is open-source sudoku solver and puzzle generator library with `dart`
-version: 1.2.0
-homepage: https://github.com/einsitang/sudoku-dart
+version: 0.0.1
+homepage: https://github.com/Brilberry/fork-sudoku-dart
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
