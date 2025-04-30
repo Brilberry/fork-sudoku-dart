@@ -29,7 +29,7 @@ Sudoku generate({Level level = Level.easy, int? seed}) {
 }
 
 Sudoku _generate(int digHoleCount, int? seed) {
-  List<int> randCenterZoneIndexes = shuffle(List.generate(9, (index) => index + 1)).cast<int>();
+  List<int> randCenterZoneIndexes = shuffle(List.generate(9, (index) => index + 1), Random(seed)).cast<int>();
   List<int> simplePuzzle = List.generate(81, (index) => index);
   for (int i = 0; i < simplePuzzle.length; ++i) {
     if (Matrix.getZone(index: i) == 4) {
@@ -68,7 +68,7 @@ Sudoku? _internalGenerate(List<int> digHolePuzzle, int digHoleCount, int? seed) 
     }
     candidateIndexes.add(i);
   }
-  candidateIndexes = shuffle(candidateIndexes).cast<int>();
+  candidateIndexes = shuffle(candidateIndexes, rand).cast<int>();
 
   int digHoleFulfill = 0;
   int old = -1, index = 0;

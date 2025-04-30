@@ -36,11 +36,9 @@ class Matrix {
     return indexes;
   }
 
-  static List<int> getColIndexes(int col) =>
-      List.generate(9, (index) => index * 9 + col);
+  static List<int> getColIndexes(int col) => List.generate(9, (index) => index * 9 + col);
 
-  static List<int> getRowIndexes(int row) =>
-      List.generate(9, (index) => row * 9 + index);
+  static List<int> getRowIndexes(int row) => List.generate(9, (index) => row * 9 + index);
 
   static int getIndexByZone(int zone, int indexOfZone) {
     int x = zone ~/ 3 * 3 + indexOfZone ~/ 3;
@@ -49,18 +47,15 @@ class Matrix {
   }
 }
 
-List shuffle(List list) {
-  var random = Random();
-  int n, temp;
-  for (var i = list.length - 1; i > 0; i--) {
-    // Pick a pseudorandom number according to the list length
-    n = random.nextInt(i + 1);
-
-    temp = list[i];
-    list[i] = list[n];
-    list[n] = temp;
+List<T> shuffle<T>(List<T> items, [Random? rand]) {
+  rand ??= Random();
+  for (int i = items.length - 1; i > 0; i--) {
+    int j = rand.nextInt(i + 1);
+    final tmp = items[i];
+    items[i] = items[j];
+    items[j] = tmp;
   }
-  return list;
+  return items;
 }
 
 void formatPrint(List<int> arr) {
@@ -74,8 +69,7 @@ void formatPrint(List<int> arr) {
         out += "\n";
       }
     }
-    out +=
-        '${element == -1 ? "." : element} ${(index + 1) % 3 == 0 ? "\t" : ""}';
+    out += '${element == -1 ? "." : element} ${(index + 1) % 3 == 0 ? "\t" : ""}';
   }
   print(out);
 }
